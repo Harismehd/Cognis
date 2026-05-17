@@ -4,3 +4,4 @@ scikit-learn
 joblib
 numpy
 pandas
+lightgbm  # Built with USE_GPU=ON

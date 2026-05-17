@@ -4,7 +4,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from typing import Any, Dict, List
-from sklearn.ensemble import HistGradientBoostingClassifier, HistGradientBoostingRegressor
+import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -111,44 +111,50 @@ def train() -> None:
     targets = {
         "risk": (
             y_risk_train,
-            HistGradientBoostingRegressor(
-                random_state=42, max_depth=6, learning_rate=0.07, max_iter=140,
-                max_bins=128, early_stopping=True, n_iter_no_change=20, validation_fraction=0.1,
+            lgb.LGBMRegressor(
+                random_state=42, max_depth=8, learning_rate=0.05,
+                n_estimators=300, num_leaves=127,
+                device='gpu', verbose=-1, force_col_wise=True,
             ),
         ),
         "speak": (
             y_speak_train,
-            HistGradientBoostingClassifier(
-                random_state=42, max_depth=4, learning_rate=0.08, max_iter=120,
-                max_bins=128, early_stopping=True, n_iter_no_change=20, validation_fraction=0.1,
+            lgb.LGBMClassifier(
+                random_state=42, max_depth=6, learning_rate=0.05,
+                n_estimators=200, num_leaves=63,
+                device='gpu', verbose=-1, force_col_wise=True,
             ),
         ),
         "intervention": (
             y_intervention_train,
-            HistGradientBoostingClassifier(
-                random_state=42, max_depth=4, learning_rate=0.08, max_iter=120,
-                max_bins=128, early_stopping=True, n_iter_no_change=20, validation_fraction=0.1,
+            lgb.LGBMClassifier(
+                random_state=42, max_depth=6, learning_rate=0.05,
+                n_estimators=200, num_leaves=63,
+                device='gpu', verbose=-1, force_col_wise=True,
             ),
         ),
         "error_type": (
             y_error_train,
-            HistGradientBoostingClassifier(
-                random_state=42, max_depth=8, learning_rate=0.08, max_iter=250,
-                max_bins=128, early_stopping=True, n_iter_no_change=25, validation_fraction=0.1,
+            lgb.LGBMClassifier(
+                random_state=42, max_depth=10, learning_rate=0.05,
+                n_estimators=500, num_leaves=255,
+                device='gpu', verbose=-1, force_col_wise=True,
             ),
         ),
         "tone": (
             y_tone_train,
-            HistGradientBoostingClassifier(
-                random_state=42, max_depth=4, learning_rate=0.08, max_iter=120,
-                max_bins=128, early_stopping=True, n_iter_no_change=20, validation_fraction=0.1,
+            lgb.LGBMClassifier(
+                random_state=42, max_depth=6, learning_rate=0.05,
+                n_estimators=200, num_leaves=63,
+                device='gpu', verbose=-1, force_col_wise=True,
             ),
         ),
         "action": (
             y_action_train,
-            HistGradientBoostingClassifier(
-                random_state=42, max_depth=4, learning_rate=0.08, max_iter=120,
-                max_bins=128, early_stopping=True, n_iter_no_change=20, validation_fraction=0.1,
+            lgb.LGBMClassifier(
+                random_state=42, max_depth=6, learning_rate=0.05,
+                n_estimators=200, num_leaves=63,
+                device='gpu', verbose=-1, force_col_wise=True,
             ),
         ),
     }
